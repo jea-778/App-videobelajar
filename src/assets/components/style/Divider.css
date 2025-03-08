@@ -1,0 +1,40 @@
+.divider {
+  display: flex;
+  align-items: center;
+  position: relative;
+  text-align: center;
+}
+
+.divider::after,
+.divider::before {
+  margin: -5px 5px 7px 5px;
+  content: "__________________________";
+  color: #f1f1f1;
+}
+
+.divider::before {
+  margin-right: 10px;
+  border-bottom: ;
+}
+
+.divider::after {
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .divider::after,
+  .divider::before {
+    margin: -5px 5px 7px 5px;
+    content: "_____________________";
+    color: #f1f1f1;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .divider::after,
+  .divider::before {
+    margin: -5px 5px 7px 5px;
+    content: "_____________";
+    color: #f1f1f1;
+  }
+}

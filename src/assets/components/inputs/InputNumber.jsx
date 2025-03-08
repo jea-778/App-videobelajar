@@ -10,7 +10,7 @@ export default function InputNumber(props) {
                   <img
                     src="https://flagcdn.com/id.svg"
                     alt="Indonesia"
-                    className='max-w-6 h-6 absolute top-3 left-2.5'
+                    className='max-w-6 h-6 absolute top-3 left-[7px] sm:left-2.5'
                   />
                   </div>
                 <div className='flex gap-4'>

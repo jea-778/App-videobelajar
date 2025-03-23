@@ -39,11 +39,11 @@ export default function Footer() {
                           </div>
                         </p>
                         <div className='hidden md:flex md:flex-col gap-[15px]'>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Digital & Teknologi</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Pemasaran</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Manajemen Bisnis</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Pengembangan Diri</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Desain</p>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Digital & Teknologi</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Pemasaran</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Manajemen Bisnis</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Pengembangan Diri</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Desain</a>
                         </div>
                     </div>
 
@@ -56,11 +56,11 @@ export default function Footer() {
                           </div>
                         </p>
                         <div className='hidden md:flex md:flex-col gap-[15px]'>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Tentang Kami</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>FAQ</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Kebijakan Privasi</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Ketentuan Layanan</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Bantuan</p>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Tentang Kami</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>FAQ</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Kebijakan Privasi</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Ketentuan Layanan</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Bantuan</a>
                         </div>
                     </div>
 
@@ -72,8 +72,8 @@ export default function Footer() {
                           </div>
                         </p>
                         <div className='hidden md:flex md:flex-col gap-[15px]'>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Tips Sukses</p>
-                        <p className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Blog</p>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Tips Sukses</a>
+                        <a href="/about" className='text-[#333333AD] font-sans leading-[140%] tracking-[0.2px]'>Blog</a>
                         </div>
                     </div>
                   </div>

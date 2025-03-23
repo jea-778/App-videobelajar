@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function IntroEnd({ title, desc, text, buttonText }) {
+export default function IntroEnd({ title, desc, text, buttonText, value, type, name, onKeyDown, onChange, onClick, error, subs }) {
   return (
     <>
     
@@ -21,11 +21,21 @@ export default function IntroEnd({ title, desc, text, buttonText }) {
       </p>
       </div>
 
+        {error ? <p className='text-red-500 font-poppins text-sm sm:text-[16px] mb-2'>{error}</p> : subs ? <p className='text-white font-poppins text-sm sm:text-[16px] mb-2'>{subs}</p> : null}
       <div className='flex flex-col-reverse md:flex-row static md:relative pb-[50.8px] gap-4 xl:gap-0'>
-      <button className='static md:absolute w-[280px] md:w-[132px] h-[40px] md:h-[42px] rounded-lg md:right-[8px] md:top-[7.5px] bg-[#FFBD3A]'>
+      <button
+      onClick={onClick}
+      className='static md:absolute w-[280px] md:w-[132px] h-[40px] md:h-[42px] rounded-lg md:right-[8px] md:top-[7.5px] bg-[#FFBD3A]'>
           <a className='text-[#FFFFFF] text-[14px] xl:text-[16px] font-sans font-[600] leading-[140%] tracking-[0.2px] md:tracking-[0.2px]' href="#">{buttonText}</a>
         </button>
-        <input className='pt-2.5 pb-2.5 md:pt-2 md:pb-2 md:pl-8 text-center md:text-start text-[14px] md:text-[16px] rounded-lg w-[280px] md:w-[525px] h-[40px] md:h-[58px]' type="text" placeholder='Masukkan Email'/>
+        <input
+        value={value}
+        name={name}
+        type={type}
+        onKeyDown={onKeyDown}
+        onChange={onChange}
+        className='pt-2.5 pb-2.5 md:pt-2 md:pb-2 md:pl-8 text-center md:text-start text-[14px] md:text-[16px] rounded-lg w-[280px] md:w-[525px] h-[40px] md:h-[58px]' placeholder='Masukkan Email'
+        />
       </div>
 
      

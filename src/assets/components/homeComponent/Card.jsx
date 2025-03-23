@@ -1,11 +1,24 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-export default function Card({ starNames, imageName, title, text, avatarName, name, job, company, at, rate, price }) {
+export default function Card({ starNames, imageName, title, text, avatarName, name, job, company, at, rate, price, onClick }) {
+  const navigate = useNavigate();
+
+  const navigateDetail = () => {
+    navigate('/detail')
+  }
+
   return (
     <>
-        <div className="w-[320px] sm:w-[384px] h-[147px] sm:h-[426px] bg-white p-4 sm:p-5 rounded-xl border-[#3A35411F] border">
-  <div className='flex sm:flex sm:flex-col align-start'>
-    <img className="w-[82px] h-[82px] sm:w-[344px] sm:h-[193px] object-cover rounded-xl" src={`./images/poster/${imageName}`} alt="" />
+        <div 
+        onClick={navigateDetail} 
+        className="w-[320px] sm:w-[384px] h-[147px] sm:h-[426px] bg-white p-4 sm:p-5 rounded-xl border-[#3A35411F] border cursor-pointer">
+  <div 
+  className='flex sm:flex sm:flex-col align-start'>
+    <img 
+    className="w-[82px] h-[82px] sm:w-[344px] sm:h-[193px] object-cover rounded-xl" 
+    src={`./images/poster/${imageName}`} 
+    alt="" />
 
     <div className='sm:flex sm:flex-col justify-start text-left pl-3 md:pl-0'>
       <div className="flex flex-col pt-0 sm:pt-4">
@@ -44,7 +57,7 @@ export default function Card({ starNames, imageName, title, text, avatarName, na
       {starNames.map((star, index) => (
         <img key={index} src={star} className='w-[18px] h-[18px]' />
       ))}
-      <a className="font-sans text-[12px] xl:text-[14px] text-[#333333AD] font-[500] leading-[19.6px] tracking-[0.2px] underline pl-2" href="">{rate}</a>
+      <p className="font-sans text-[12px] xl:text-[14px] text-[#333333AD] font-[500] leading-[19.6px] tracking-[0.2px] underline pl-2" href="">{rate}</p>
     </div>
     <h4 className='font-poppins text-[20px] sm:text-[24px] text-[#3ECF4C] leading-[120%] tracking-[0%] font-[600]'>{price}</h4>
   </div>

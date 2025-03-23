@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../../store/authstore';
 
 export default function NavbarProfile(props) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { isLoggedIn, logout } = useAuthStore();
+  const navigate = useNavigate();
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -11,11 +16,41 @@ export default function NavbarProfile(props) {
     setIsDropdownOpen(false);
   };
 
+  const navigateBeranda = () => {
+    navigate('/')
+  }
+
+  const navigateLogin = () => {
+    navigate('/login')
+  }
+
+  const navigateRegister = () => {
+    navigate('/register')
+  }
+  
+  const navigateKategori = () => {
+    navigate('/kategori')
+  }
+  const navigateProfile = () => {
+    navigate('/profile')
+  }
+  const navigateKelas = () => {
+    navigate('/kelas')
+  }
+  const navigatePesanan = () => {
+    navigate('/pesanan')
+  }
+  const navigateLeave = () => {
+    logout();
+    navigate('/login')
+  }
+
   return (
     <>
-      <div className='flex relative justify-between items-center pt-4 md:pl-[168px] sm:pl-[54px] pl-[27px] pb-4 border shadow-xl md:shadow-none bg-white'>
+<div className='flex relative justify-between items-center pt-4 md:pl-[168px] sm:pl-[54px] pl-[27px] pb-4 border shadow-xl md:shadow-none bg-white gap-5'>
 
-<svg className='cursor-pointer w-[144px] h-[31px] sm:w-[168px] md:w-[193px]' viewBox="0 0 193 31" xmlns="http://www.w3.org/2000/svg">
+        
+        <svg className='cursor-pointer w-[144px] h-[31px] sm:w-[168px] md:w-[193px] min-w-[144px] min-h-[31px] sm:min-w-[168px] md:min-w-[193px]' viewBox="0 0 193 31" xmlns="http://www.w3.org/2000/svg">
 <path d="M5.824 23.04L0 7.168H4.288L8.32 19.168L12.352 7.168H16.64L10.784 23.04H5.824Z" fill="#F64920"/>
 <path d="M21.6315 4.704C20.8848 4.704 20.2662 4.48 19.7755 4.032C19.3062 3.584 19.0715 3.01867 19.0715 2.336C19.0715 1.65333 19.3062 1.09867 19.7755 0.671999C20.2662 0.224 20.8848 0 21.6315 0C22.3782 0 22.9862 0.224 23.4555 0.671999C23.9462 1.09867 24.1915 1.65333 24.1915 2.336C24.1915 3.01867 23.9462 3.584 23.4555 4.032C22.9862 4.48 22.3782 4.704 21.6315 4.704ZM19.5835 23.04V7.168H23.6795V23.04H19.5835Z" fill="#F64920"/>
 <path d="M35.4507 23.424C33.9574 23.424 32.6241 23.0613 31.4508 22.336C30.2774 21.6107 29.3494 20.6187 28.6667 19.36C27.9841 18.1013 27.6427 16.672 27.6427 15.072C27.6427 13.472 27.9841 12.0533 28.6667 10.816C29.3494 9.55733 30.2774 8.576 31.4508 7.872C32.6241 7.14667 33.9574 6.784 35.4507 6.784C36.6454 6.784 37.6908 7.008 38.5868 7.456C39.4827 7.904 40.2081 8.53333 40.7627 9.344V0H44.8587V23.04H41.2108L40.7627 20.768C40.2507 21.472 39.5681 22.0907 38.7147 22.624C37.8827 23.1573 36.7947 23.424 35.4507 23.424ZM36.3148 19.84C37.6374 19.84 38.7147 19.4027 39.5467 18.528C40.4001 17.632 40.8268 16.4907 40.8268 15.104C40.8268 13.7173 40.4001 12.5867 39.5467 11.712C38.7147 10.816 37.6374 10.368 36.3148 10.368C35.0134 10.368 33.9361 10.8053 33.0827 11.68C32.2294 12.5547 31.8027 13.6853 31.8027 15.072C31.8027 16.4587 32.2294 17.6 33.0827 18.496C33.9361 19.392 35.0134 19.84 36.3148 19.84Z" fill="#F64920"/>
@@ -31,95 +66,153 @@ export default function NavbarProfile(props) {
 <path fill-rule="evenodd" clip-rule="evenodd" d="M19.7755 4.032C20.2662 4.48 20.8848 4.704 21.6315 4.704C22.3782 4.704 22.9862 4.48 23.4555 4.032C23.9462 3.584 24.1915 3.01867 24.1915 2.336C24.1915 1.65333 23.9462 1.09867 23.4555 0.671999C22.9862 0.224 22.3782 0 21.6315 0C20.8848 0 20.2662 0.224 19.7755 0.671999C19.3062 1.09867 19.0715 1.65333 19.0715 2.336C19.0715 3.01867 19.3062 3.584 19.7755 4.032ZM19.5835 7.168V23.04H23.6795V7.168H19.5835ZM0 7.168L5.824 23.04H10.784L16.64 7.168H12.352L8.32 19.168L4.288 7.168H0ZM35.4507 23.424C33.9574 23.424 32.6241 23.0613 31.4508 22.336C30.2774 21.6107 29.3494 20.6187 28.6667 19.36C27.9841 18.1013 27.6427 16.672 27.6427 15.072C27.6427 13.472 27.9841 12.0533 28.6667 10.816C29.3494 9.55733 30.2774 8.576 31.4508 7.872C32.6241 7.14667 33.9574 6.784 35.4507 6.784C36.6454 6.784 37.6908 7.008 38.5868 7.456C39.4827 7.904 40.2081 8.53333 40.7627 9.344V0H44.8587V23.04H41.2108L40.7627 20.768C40.2507 21.472 39.5681 22.0907 38.7147 22.624C37.8827 23.1573 36.7947 23.424 35.4507 23.424ZM36.3148 19.84C37.6374 19.84 38.7147 19.4027 39.5467 18.528C40.4001 17.632 40.8268 16.4907 40.8268 15.104C40.8268 13.7173 40.4001 12.5867 39.5467 11.712C38.7147 10.816 37.6374 10.368 36.3148 10.368C35.0134 10.368 33.9361 10.8053 33.0827 11.68C32.2294 12.5547 31.8027 13.6853 31.8027 15.072C31.8027 16.4587 32.2294 17.6 33.0827 18.496C33.9361 19.392 35.0134 19.84 36.3148 19.84ZM52.6857 22.4C53.9231 23.0827 55.3418 23.424 56.9417 23.424C58.2217 23.424 59.3631 23.1893 60.3657 22.72C61.3897 22.2507 62.2431 21.6107 62.9258 20.8C63.6297 19.968 64.1311 19.0507 64.4297 18.048H60.2697C59.9924 18.6453 59.5658 19.136 58.9897 19.52C58.4351 19.8827 57.7417 20.064 56.9097 20.064C55.8004 20.064 54.8511 19.712 54.0617 19.008C53.2937 18.304 52.8671 17.3333 52.7817 16.096H64.8457C64.8671 15.8187 64.8777 15.552 64.8777 15.296C64.8991 15.04 64.9098 14.7947 64.9098 14.56C64.9098 13.1093 64.5684 11.7973 63.8857 10.624C63.2244 9.42933 62.2964 8.49067 61.1017 7.808C59.9071 7.12533 58.5311 6.784 56.9737 6.784C55.3097 6.784 53.8591 7.14667 52.6217 7.872C51.4058 8.576 50.4457 9.568 49.7417 10.848C49.0591 12.128 48.7177 13.5893 48.7177 15.232C48.7177 16.8533 49.0698 18.2827 49.7738 19.52C50.4777 20.7573 51.4484 21.7173 52.6857 22.4ZM54.3177 10.976C55.0858 10.4 55.9711 10.112 56.9737 10.112C58.0191 10.112 58.8937 10.4213 59.5977 11.04C60.3017 11.6587 60.6857 12.4907 60.7497 13.536H52.8457C53.0591 12.384 53.5497 11.5307 54.3177 10.976ZM76.1708 23.424C74.6348 23.424 73.2481 23.072 72.0107 22.368C70.7947 21.664 69.8241 20.6933 69.0988 19.456C68.3948 18.1973 68.0428 16.7467 68.0428 15.104C68.0428 13.4613 68.4054 12.0213 69.1308 10.784C69.8561 9.52533 70.8268 8.544 72.0428 7.84C73.2801 7.136 74.6667 6.784 76.2028 6.784C77.7174 6.784 79.0827 7.136 80.2988 7.84C81.5361 8.544 82.5068 9.52533 83.2108 10.784C83.9361 12.0213 84.2988 13.4613 84.2988 15.104C84.2988 16.7467 83.9361 18.1973 83.2108 19.456C82.5068 20.6933 81.5361 21.664 80.2988 22.368C79.0614 23.072 77.6854 23.424 76.1708 23.424ZM76.1708 19.872C77.2374 19.872 78.1654 19.4773 78.9548 18.688C79.7441 17.8773 80.1388 16.6827 80.1388 15.104C80.1388 13.5253 79.7441 12.3413 78.9548 11.552C78.1654 10.7413 77.2481 10.336 76.2028 10.336C75.1148 10.336 74.1761 10.7413 73.3868 11.552C72.6188 12.3413 72.2348 13.5253 72.2348 15.104C72.2348 16.6827 72.6188 17.8773 73.3868 18.688C74.1761 19.4773 75.1041 19.872 76.1708 19.872ZM105.377 15.1069C102.118 17.4506 99.2007 20.239 96.7134 23.3832C95.8684 23.3001 95.1083 23.0897 94.433 22.752C93.537 22.304 92.8117 21.6747 92.257 20.864L91.809 23.04H88.161V0H92.257V9.44C92.769 8.736 93.441 8.11733 94.273 7.584C95.1263 7.05067 96.225 6.784 97.569 6.784C99.0623 6.784 100.396 7.14667 101.569 7.872C102.742 8.59733 103.67 9.58933 104.353 10.848C105.032 12.099 105.373 13.5187 105.377 15.1069ZM121.414 7.99226C116.991 8.93891 112.819 10.5659 109.015 12.7584C109.185 12.0821 109.429 11.4453 109.748 10.848C110.452 9.568 111.412 8.576 112.628 7.872C113.865 7.14667 115.316 6.784 116.98 6.784C118.537 6.784 119.913 7.12533 121.108 7.808C121.212 7.86748 121.314 7.9289 121.414 7.99226ZM132.657 7.09533C131.928 7.05858 131.194 7.03998 130.456 7.03998C129.821 7.03998 129.189 7.05374 128.561 7.08099V0H132.657V7.09533ZM151.576 12.5752C147.91 10.5042 143.91 8.95566 139.676 8.03079C140.001 7.8252 140.35 7.64427 140.722 7.488C141.789 7.01867 142.984 6.784 144.306 6.784C146.568 6.784 148.349 7.34933 149.65 8.48C150.8 9.47881 151.442 10.8439 151.576 12.5752ZM159.999 18.7954C158.707 17.5732 157.339 16.4303 155.903 15.3744V7.168H159.999V18.7954ZM99.937 18.528C99.0837 19.4027 98.0063 19.84 96.705 19.84C95.3823 19.84 94.2943 19.4027 93.441 18.528C92.609 17.632 92.193 16.4907 92.193 15.104C92.193 13.7173 92.609 12.5867 93.441 11.712C94.2943 10.816 95.3823 10.368 96.705 10.368C98.0063 10.368 99.0837 10.816 99.937 11.712C100.79 12.608 101.217 13.7493 101.217 15.136C101.217 16.5227 100.79 17.6533 99.937 18.528ZM156.127 4.032C156.618 4.48 157.236 4.704 157.983 4.704C158.73 4.704 159.338 4.48 159.807 4.032C160.298 3.584 160.543 3.01867 160.543 2.336C160.543 1.65333 160.298 1.09867 159.807 0.671999C159.338 0.224 158.73 0 157.983 0C157.236 0 156.618 0.224 156.127 0.671999C155.658 1.09867 155.423 1.65333 155.423 2.336C155.423 3.01867 155.658 3.584 156.127 4.032ZM169.945 23.424C168.58 23.424 167.46 23.2107 166.585 22.784C165.711 22.336 165.06 21.7493 164.633 21.024C164.207 20.2987 163.993 19.4987 163.993 18.624C163.993 17.152 164.57 15.9573 165.721 15.04C166.873 14.1227 168.602 13.664 170.906 13.664H174.938V13.28C174.938 12.192 174.628 11.392 174.01 10.88C173.391 10.368 172.623 10.112 171.706 10.112C170.874 10.112 170.148 10.3147 169.529 10.72C168.911 11.104 168.527 11.68 168.378 12.448H164.378C164.484 11.296 164.868 10.2933 165.529 9.44C166.212 8.58667 167.087 7.936 168.154 7.488C169.22 7.01867 170.415 6.784 171.738 6.784C173.999 6.784 175.78 7.34933 177.081 8.48C178.383 9.61067 179.034 11.2107 179.034 13.28V23.04H175.546L175.161 20.48C174.692 21.3333 174.031 22.0373 173.178 22.592C172.346 23.1467 171.268 23.424 169.945 23.424ZM170.874 20.224C172.047 20.224 172.954 19.84 173.594 19.072C174.255 18.304 174.671 17.3547 174.842 16.224H171.354C170.266 16.224 169.487 16.4267 169.018 16.832C168.548 17.216 168.314 17.696 168.314 18.272C168.314 18.8907 168.548 19.3707 169.018 19.712C169.487 20.0533 170.105 20.224 170.874 20.224ZM186.79 7.168H183.142V23.04H187.238V15.808C187.238 14.592 187.43 13.6427 187.814 12.96C188.22 12.2773 188.774 11.7973 189.478 11.52C190.182 11.2427 190.982 11.104 191.878 11.104H193.03V6.784C191.686 6.784 190.513 7.09333 189.51 7.712C188.529 8.30933 187.75 9.12 187.174 10.144L186.79 7.168Z" fill="#FFBD3A"/>
         </svg>
 
-<div className='relative'>
+
+  <div className='relative'>
+
+        {isLoggedIn ? (
+        <>
         <div className='flex relative justify-between items-center md:hidden pr-[27px] md:pr-[142px] xl:pr-[162px]'>
-        <svg
-          onClick={toggleDropdown}
-          className='cursor-pointer w-[20px] h-[13px]'
-          viewBox="0 0 20 13"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 10.5V12.5H20V10.5H0ZM0 5.5V7.5H20V5.5H0ZM0 0.5V2.5H20V0.5H0Z"
-            fill="#4A505C"
-          />
-        </svg>
-      </div>
-
-      <div className='flex relative justify-center items-center gap-9 pr-[45px] md:pr-[142px] xl:pr-[162px] md:flex hidden'>
-        <p className='font-semibold font-sans text-[#333333AD] cursor-pointer'>{props.text}</p>
-        <div className="relative">
-          <img
-            className='cursor-pointer'
-            src={`/images/icons/${props.imageName}`}
-            alt="Profile"
-            onClick={toggleDropdown}
-          />
+              <svg
+                onClick={toggleDropdown}
+                className='cursor-pointer w-[20px] h-[13px]'
+                viewBox="0 0 20 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0 10.5V12.5H20V10.5H0ZM0 5.5V7.5H20V5.5H0ZM0 0.5V2.5H20V0.5H0Z"
+                  fill="#4A505C" />
+              </svg>
         </div>
-      </div>
 
-      {isDropdownOpen && (
-        <div 
-        onClick={closeDropdown} 
-        className="fixed md:absolute right-0 md:right-[140px] xl:right-[155px] mt-6 md:mt-2 w-full md:w-[200px] bg-white md:rounded-lg shadow-lg md:border border-gray-200 z-50"
-      >
-          <ul>
+            <div className='flex relative justify-center items-center gap-9 pr-[45px] md:pr-[142px] xl:pr-[162px] md:flex hidden'>
+                <a onClick={navigateKategori} className='font-semibold font-sans text-[#333333AD] cursor-pointer'>{props.text}</a>
+                <div className="relative">
+                  <img
+                    className='cursor-pointer'
+                    src={`/images/icons/${props.imageName}`}
+                    alt="Profile"
+                    onClick={toggleDropdown} />
+                </div>
+              </div>
+              </>
+         ) : (
+          <>
+          <div className='flex relative justify-between items-center md:hidden pr-[27px] md:pr-[142px] xl:pr-[162px]'>
+                <svg
+                  onClick={toggleDropdown}
+                  className='cursor-pointer w-[20px] h-[13px]'
+                  viewBox="0 0 20 13"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M0 10.5V12.5H20V10.5H0ZM0 5.5V7.5H20V5.5H0ZM0 0.5V2.5H20V0.5H0Z"
+                    fill="#4A505C" />
+                </svg>
+              </div>
+              
+              <div className='flex flex-row-reverse lg:flex-row relative justify-center items-center gap-4 pr-[45px] md:pr-[142px] xl:pr-[162px] md:flex hidden'>
+                  <a onClick={navigateKategori} className='mr-[20px] font-semibold font-sans text-[#333333AD] cursor-pointer'>{props.text}</a>
+                  <button onClick={navigateLogin} className='font-semibold font-sans  md:w-[94px] md:h-[42px] text-[#FFFFFF] bg-[#3ECF4C] rounded-lg p-2 cursor-pointer'>Login</button>
+                  <button onClick={navigateRegister} className='font-semibold font-sans md:w-[94px] md:h-[42px] text-[#3ECF4C] bg-[#ffffff] rounded-lg p-2 border border-[#3ECF4C] cursor-pointer'>Register</button>
 
-                  <li className='md:hidden block border md:rounded-t-lg'>
-                    <a
-                      href="#"
-                      className="md:hidden pt-3 pb-3 pl-4 pr-4 block text-gray-700 hover:bg-gray-100"
-                    >
-                      Kategori
-                    </a>
-                  </li>
+              </div>
+            </>
+         )}
 
-                  <li className='border md:rounded-t-lg'>
-                    <a
-                      href="#"
-                      className="block md:px-4 md:py-2 pt-3 pb-3 pl-4 pr-4 text-gray-700 hover:bg-gray-100"
-                    >
-                      Profil Saya
-                    </a>
-                  </li>
+         
+         {isDropdownOpen && (
+             
+          <>
+          {isLoggedIn ? (
+           <div 
+             onClick={closeDropdown} 
+             className="fixed md:absolute right-0 md:right-[140px] xl:right-[155px] mt-6 md:mt-2 w-full md:w-[200px] bg-white md:rounded-lg shadow-lg md:border border-gray-200 z-50"
+           >
+             <ul>
+               <li className='md:hidden block border md:rounded-t-lg'>
+                 <a
+                   onClick={navigateKategori}
+                   className="md:hidden pt-4 pb-4 pl-3 pr-3 block text-[#333333] hover:bg-gray-100"
+                 >
+                   Kategori
+                 </a>
+               </li>
+               <li className='border md:rounded-t-lg'>
+                 <a
+                   onClick={navigateProfile}
+                   className="block md:px-4 md:py-2 pt-4 pb-4 pl-3 pr-3 text-[#333333] hover:bg-gray-100"
+                 >
+                   Profil Saya
+                 </a>
+               </li>
+               <li className='border'>
+                 <a
+                   onClick={navigateKelas}
+                   className="block md:px-4 md:py-2 pt-4 pb-4 pl-3 pr-3 text-[#333333] hover:bg-gray-100"
+                 >
+                   Kelas saya
+                 </a>
+               </li>
+               <li className='border'>
+                 <a
+                   onClick={navigatePesanan}
+                   className="block md:px-4 md:py-2 pt-4 pb-4 pl-3 pr-3 text-[#333333] hover:bg-gray-100"
+                 >
+                   Pesanan saya
+                 </a>
+               </li>
+               <li className='border md:rounded-b-lg'>
+                 <a
+                   onClick={navigateLeave}
+                   className="flex md:px-4 md:py-2 pt-4 pb-4 pl-3 pr-3 text-[#FF5C2B] hover:bg-gray-100"
+                 >
+                   Keluar  
+                   <svg className='relative left-2 top-1 w-[20px] h-[18px] cursor-pointer' viewBox='0 0 20 18' xmlns="http://www.w3.org/2000/svg">
+                     <path d="M15 4L13.59 5.41L16.17 8H6V10H16.17L13.59 12.58L15 14L20 9L15 4ZM2 2H10V0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H10V16H2V2Z" fill="#FF5C2B"/>
+                   </svg>
+                 </a>
+               </li>
+             </ul>
+           </div>
+          ) : (
+            <div 
+             onClick={closeDropdown} 
+             className="fixed md:hidden md:absolute right-0 md:right-[140px] xl:right-[155px] mt-6 md:mt-2 w-full md:w-[200px] bg-white md:rounded-lg shadow-lg md:border border-gray-200 z-50"
+           >
+                <ul>
+                   <li className='md:hidden block border md:rounded-t-lg'>
+                     <a
+                       onClick={navigateBeranda}
+                       className="md:hidden font-semibold font-sans pt-4 pb-4 pl-3 pr-3 block text-[#3ECF4C] hover:bg-gray-100"
+                       >
+                       Beranda
+                     </a>
+                   </li>
+                   <li className='md:hidden block border md:rounded-t-lg'>
+                     <a
+                       onClick={navigateBeranda}
+                       className="md:hidden font-semibold font-sans pt-4 pb-4 pl-3 pr-3 block text-[#333333AD] hover:bg-gray-100"
+                       >
+                       Kategori
+                     </a>
+                   </li>
+                   <li className='flex flex-col gap-2 border md:rounded-t-lg p-3'>
+                      <button onClick={navigateLogin} className='font-semibold font-sans md:hidden text-[#FFFFFF] bg-[#3ECF4C] rounded-lg p-2 cursor-pointer'>Login</button>
+                      <button onClick={navigateRegister} className='font-semibold font-sans md:hidden text-[#3ECF4C] bg-[#ffffff] rounded-lg p-2 border border-[#3ECF4C] cursor-pointer'>Register</button>
+                   </li>
+                </ul>
+              </div>
+          )}
 
-                  <li className='border'>
-                    <a
-                      href="#"
-                      className="block md:px-4 md:py-2 pt-3 pb-3 pl-4 pr-4 text-gray-700 hover:bg-gray-100"
-                    >
-                      Kelas saya
-                    </a>
-                  </li>
+          </>
 
-                  <li className='border'>
-                    <a
-                      href="#"
-                      className="block md:px-4 md:py-2 pt-3 pb-3 pl-4 pr-4 text-gray-700 hover:bg-gray-100"
-                    >
-                      Pesanan saya
-                    </a>
+         )}
+         
+           </div>
+         </div>
 
-                  </li>
-                  <li className='border md:rounded-b-lg'>
-                    <a
-                      href="#"
-                      className="flex md:px-4 md:py-2 pt-3 pb-3 pl-4 pr-4 text-[#FF5C2B] hover:bg-gray-100"
-                    >
-                      Keluar <svg className='relative left-2 top-1 w-[20px] h-[18px] cursor-pointer' viewBox='0 0 20 18' xmlns="http://www.w3.org/2000/svg">
-<path d="M15 4L13.59 5.41L16.17 8H6V10H16.17L13.59 12.58L15 14L20 9L15 4ZM2 2H10V0H2C0.9 0 0 0.9 0 2V16C0 17.1 0.9 18 2 18H10V16H2V2Z" fill="#FF5C2B"/>
-                            </svg>
-                    </a>
-                    </li>
-          </ul>
-          
-        </div>
-      )}
-</div>
-
-      </div>
-
-    </>
-  );
-};
+             </>
+           );
+         };

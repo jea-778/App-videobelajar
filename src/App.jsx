@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './global.css';
 import './typography.css';
-import HomePage from './assets/pages/HomePage';
-import LoginPage from './assets/pages/LoginPage';
-import RegisterPage from './assets/pages/RegisterPage';
-import DetailPage from './assets/pages/DetailPage';
+import HomePage from './assets/pages/home/HomePage';
+import IndexLogin from './assets/pages/login/index';
+import IndexRegister from './assets/pages/register/index';
+import Index from './assets/pages/profile/index';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/detail" element={<DetailPage />} />
+        <Route path="/login" element={<IndexLogin />} />
+        <Route path="/register" element={<IndexRegister />} />
+        <Route path="/profile" element={<Index />} />
       </Routes>
     </Router>
   );

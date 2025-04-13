@@ -9,6 +9,7 @@ import ForgetPass from "../../components/ui/ForgetPass";
 import Navbar from "../../components/navbar/Navbar";
 import useAuthStore from "../../store/authstore";
 import { useNavigate } from "react-router-dom";
+import { getUsers } from "../../../services/api/users";
 
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
@@ -46,41 +47,44 @@ export default function LoginForm() {
   };
 
   // Fungsi untuk melakukan login
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Validasi email
-    if (!email) {
-      setError("Email harus di isi");
-      return;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      setError("Email tidak valid");
-      return;
-    }
+    try {
+      if (!email) {
+        setError("Email harus di isi");
+        return;
+      } else if (!/\S+@\S+\.\S+/.test(email)) {
+        setError("Email tidak valid");
+        return;
+      }
 
-    // Validasi password
-    if (!password) {
-      setPasswordError("Kata sandi harus di isi");
-      return;
-    } else if (password.length < 6) {
-      setPasswordError("Kata sandi harus minimal 6 karakter");
-      return;
-    }
+      // Validasi password
+      if (!password) {
+        setPasswordError("Kata sandi harus di isi");
+        return;
+      } else if (password.length < 6) {
+        setPasswordError("Kata sandi harus minimal 6 karakter");
+        return;
+      }
 
-    // Fungsi untuk mencari user yang terdaftar
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+      const response = await getUsers();
+      const users = response.data;
 
-    const user = storedUsers.find(
-      (u) => u.email === email && u.password === password
-    );
+      const foundUser = users.find(
+        (user) => user.email === email && user.password === password
+      );
 
-    if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      localStorage.setItem("isLoggedIn", true);
-      login();
-      navigate("/");
-    } else {
-      setError("Email atau kata sandi salah");
+      if (foundUser) {
+        localStorage.setItem("currentUser", JSON.stringify(foundUser));
+        useAuthStore.getState().login();
+        navigate("/");
+      } else {
+        setError("Email atau password salah");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Terjadi kesalahan saat login");
     }
   };
 
@@ -91,7 +95,7 @@ export default function LoginForm() {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      handleSubmit(e);
+      handleLogin(e);
     }
   };
 
@@ -108,7 +112,7 @@ export default function LoginForm() {
             desc="Yuk, lanjutin belajarmu di videobelajar."
           />
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleLogin}>
             <Input
               name="email"
               labelEmail="E-Mail"
@@ -140,7 +144,7 @@ export default function LoginForm() {
                 bg={"#3ECF4C"}
                 children={"Masuk"}
                 color={"white"}
-                onClick={handleSubmit}
+                onClick={handleLogin}
               />
 
               <Buttons

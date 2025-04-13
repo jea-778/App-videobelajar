@@ -12,6 +12,8 @@ import Navbar from "../../components/navbar/Navbar";
 import InputPass from "../../components/inputs/InputPass";
 import useAuthStore from "../../store/authstore";
 
+import { addUser } from "../../../services/api/users";
+
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
 );
@@ -31,7 +33,6 @@ export default function RegisterForm() {
   const [numberError, setNumberError] = useState("");
   const [passError, setPassError] = useState("");
   const [confirmPassError, setConfirmPassError] = useState("");
-  const { login } = useAuthStore();
   const navigate = useNavigate();
 
   // fungsi untuk mengubah nilai name
@@ -79,7 +80,7 @@ export default function RegisterForm() {
   };
 
   // Fungsi untuk melakukan register
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // validasi
@@ -127,7 +128,6 @@ export default function RegisterForm() {
     }
 
     const newUser = {
-      id: users.length + 1,
       name,
       email,
       gender,
@@ -137,25 +137,30 @@ export default function RegisterForm() {
       role: "user",
     };
 
-    const updatedUsers = [...users, newUser];
-    setUsers(updatedUsers);
+    try {
+      const response = await addUser(newUser);
+      const createdUser = response.data;
 
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    localStorage.setItem("currentUser", JSON.stringify(newUser));
-
-    login();
-    navigate("/");
-  };
-
-  const navigasiLogin = (e) => {
-    e.preventDefault();
-    navigate("/login");
+      // Simpan ke localStorage dan login
+      localStorage.setItem("currentUser", JSON.stringify(createdUser));
+      localStorage.setItem("users", JSON.stringify(newUser));
+      useAuthStore.getState().login();
+      navigate("/");
+    } catch (error) {
+      console.error("Register error:", error);
+      setError("Gagal daftar, coba lagi nanti.");
+    }
   };
 
   const onKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSubmit(e);
     }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate("/login");
   };
 
   return (
@@ -242,7 +247,7 @@ export default function RegisterForm() {
 
             <Buttons
               bg={"#E2FCD9CC"}
-              onClick={navigasiLogin}
+              onClick={handleLogin}
               children={"Masuk"}
               color={"#3ECF4C"}
             />

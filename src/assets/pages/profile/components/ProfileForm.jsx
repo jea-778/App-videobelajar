@@ -5,9 +5,11 @@ import Select from "./Select.jsx";
 import InputGender from "./inputs/InputGender.jsx";
 import InputPass from "./inputs/InputPass.jsx";
 import UserData from "./UserData.jsx";
-import Button from "./Button";
-import { Navigate, useNavigate } from "react-router-dom";
+import ButtonSave from "./ButtonSave.jsx";
+import ButtonDelete from "./ButtonDelete.jsx";
 import useAuthStore from "../../../store/authstore.js";
+import { useNavigate } from "react-router-dom";
+import { deleteUser, updateUser } from "../../../../services/api/users";
 
 export default function ProfileForm() {
   const [users, setUsers] = useState([]);
@@ -24,7 +26,7 @@ export default function ProfileForm() {
   const [numberError, setNumberError] = useState("");
   const [passError, setPassError] = useState("");
   const [confirmPassError, setConfirmPassError] = useState("");
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuthStore();
 
   const handleNameChange = (e) => {
@@ -74,16 +76,32 @@ export default function ProfileForm() {
     }
   };
 
-  const handleDelete = (e) => {
+  // Fungsi untuk melakukan delete
+  const handleDelete = async (e) => {
     e.preventDefault();
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("users");
-    logout();
-    Navigate("/");
+
+    const userString = localStorage.getItem("currentUser");
+    const currentUser = userString ? JSON.parse(userString) : null;
+
+    try {
+      const confirmDelete = window.confirm("Yakin ingin menghapus akun?");
+      if (!confirmDelete) return;
+
+      await deleteUser(currentUser.id);
+      localStorage.removeItem("currentUser");
+      logout();
+      navigate("/");
+    } catch (error) {
+      alert.error("Error deleting user:", error);
+    }
   };
 
-  const handleSave = (e) => {
+  // Fungsi untuk melakukan update/simpan
+  const handleSave = async (e) => {
     e.preventDefault();
+
+    const userString = localStorage.getItem("currentUser");
+    const currentUser = userString ? JSON.parse(userString) : null;
 
     // validasi
     if (!name) {
@@ -129,22 +147,23 @@ export default function ProfileForm() {
       return;
     }
 
-    const newUser = {
-      id: users.length + 1,
-      name,
-      email,
-      gender,
-      number,
-      password,
-      confirmPass,
-      role: "user",
-    };
+    try {
+      const updatedUser = {
+        name,
+        email,
+        gender,
+        number,
+        password,
+        confirmPass,
+      };
 
-    const updatedUsers = [...users, newUser];
-    setUsers(updatedUsers);
+      const response = await updateUser(currentUser.id, updatedUser);
+      console.log("User updated:", response.data);
 
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-    localStorage.setItem("currentUser", JSON.stringify(newUser));
+      localStorage.setItem("currentUser", JSON.stringify(response.data));
+    } catch (error) {
+      console.error("Error updating user:", error);
+    }
   };
 
   const onKeyDown = (e) => {
@@ -164,6 +183,10 @@ export default function ProfileForm() {
       setNumber(user.number || "");
       setPassword(user.password || "");
       setConfirmPass(user.confirmPass || "");
+    }
+
+    if (!isLoggedIn) {
+      navigate("/");
     }
   }, []);
 
@@ -244,14 +267,9 @@ export default function ProfileForm() {
         />
       </form>
 
-      <div className="flex justify-center lg:justify-end gap-4">
-        <Button
-          text="Delete"
-          bg="#F64920"
-          hover="white"
-          onClick={handleDelete}
-        />
-        <Button text="Simpan" bg="#3ECF4C" hover="black" onClick={handleSave} />
+      <div className="flex flex-col md:flex-row md:flex justify-center md:justify-end gap-4">
+        <ButtonDelete text="Delete" bg="#F64920" onClick={handleDelete} />
+        <ButtonSave text="Simpan" bg="#3ECF4C" onClick={handleSave} />
       </div>
     </div>
   );

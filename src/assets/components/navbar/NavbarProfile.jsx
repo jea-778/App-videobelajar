@@ -34,7 +34,7 @@ export default function NavbarProfile({ imageName }) {
     navigate("/profile");
   };
   const navigateKelas = () => {
-    navigate("/kelas");
+    navigate("/");
   };
   const navigatePesanan = () => {
     navigate("/pesanan");

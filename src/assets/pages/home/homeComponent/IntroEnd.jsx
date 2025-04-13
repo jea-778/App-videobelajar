@@ -17,7 +17,7 @@ export default function IntroEnd({
   return (
     <>
       <div className="pb-[28px] md:pb-[64px]">
-        <div className="w-[320px] h-[400px] sm md:w-[700px] lg:w-[980px] xl:w-[1200px] xl:h-[400px] mx-auto text-center rounded-xl flex flex-col justify-center items-center bg-[url('./images/poster/banner.jpeg')] bg-cover bg-center bg-no-repeat relative">
+        <div className="w-[320px] h-[400px] sm md:w-[700px] lg:w-[980px] xl:w-[1200px] xl:h-[400px] mx-auto text-center rounded-xl flex flex-col justify-center items-center bg-[url('/images/poster/banner.jpeg')] bg-cover bg-center bg-no-repeat relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 to-black/80 rounded-xl flex flex-col justify-center items-center">
             <div className="flex flex-col gap-1 w-[280px] md:w-[525px] pt-[48px] xl:pt-[92px]">
               <p className="text-[#C1C2C4] font-sans font-[500] md:text-[18px] text-[16px] leading-[140%] tracking-[0.2px] ">

@@ -6,7 +6,7 @@ export default function UserData({ email = "", name = "", onClick }) {
       <div className="flex gap-4 pb-6">
         <img
           className="w-[92px] h-[92px] rounded-[4px] object-cover cursor-pointer"
-          src="./public/images/poster/card1.png"
+          src="/images/poster/card1.png"
           alt=""
         />
         <div className="flex flex-col justify-center gap-2">

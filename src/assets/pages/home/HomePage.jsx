@@ -6,7 +6,7 @@ import Tabs from "./homeComponent/Tabs";
 import CardList from "./homeComponent/CardList";
 import IntroEnd from "./homeComponent/IntroEnd";
 import Footer from "./homeComponent/Footer";
-import useAuthStore from "../../store/authstore";
+import useAuthStore from "../../store/zustand/authstore";
 import { useNavigate } from "react-router-dom";
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>

@@ -7,12 +7,12 @@ import InputPass from "./inputs/InputPass.jsx";
 import UserData from "./UserData.jsx";
 import ButtonSave from "./ButtonSave.jsx";
 import ButtonDelete from "./ButtonDelete.jsx";
-import useAuthStore from "../../../store/authstore.js";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, updateUser } from "../../../../services/api/users";
+import { login, logout } from "@assets/store/redux/slices/authSlice.js";
+import { useDispatch } from "react-redux";
 
 export default function ProfileForm() {
-  const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
@@ -27,7 +27,8 @@ export default function ProfileForm() {
   const [passError, setPassError] = useState("");
   const [confirmPassError, setConfirmPassError] = useState("");
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuthStore();
+
+  const dispatch = useDispatch();
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -83,16 +84,22 @@ export default function ProfileForm() {
     const userString = localStorage.getItem("currentUser");
     const currentUser = userString ? JSON.parse(userString) : null;
 
+    if (!currentUser) {
+      console.error("User not found in localStorage");
+      return;
+    }
+
     try {
       const confirmDelete = window.confirm("Yakin ingin menghapus akun?");
       if (!confirmDelete) return;
 
       await deleteUser(currentUser.id);
       localStorage.removeItem("currentUser");
-      logout();
+      localStorage.removeItem("users");
+      dispatch(logout());
       navigate("/");
     } catch (error) {
-      alert.error("Error deleting user:", error);
+      alert("Error deleting user:", error);
     }
   };
 
@@ -158,9 +165,10 @@ export default function ProfileForm() {
       };
 
       const response = await updateUser(currentUser.id, updatedUser);
-      console.log("User updated:", response.data);
+      console.log("Updated User Response:", response.data);
 
       localStorage.setItem("currentUser", JSON.stringify(response.data));
+      localStorage.setItem("users", JSON.stringify(response.data));
     } catch (error) {
       console.error("Error updating user:", error);
     }
@@ -173,7 +181,7 @@ export default function ProfileForm() {
   };
 
   useEffect(() => {
-    const userString = localStorage.getItem("currentUser");
+    const userString = localStorage.getItem("users");
     if (userString) {
       const user = JSON.parse(userString);
 
@@ -185,7 +193,7 @@ export default function ProfileForm() {
       setConfirmPass(user.confirmPass || "");
     }
 
-    if (!isLoggedIn) {
+    if (!login) {
       navigate("/");
     }
   }, []);

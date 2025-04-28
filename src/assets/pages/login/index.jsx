@@ -7,9 +7,10 @@ import Buttons from "../../components/buttons/Buttons";
 import ButtonGoogle from "../../components/buttons/ButtonGoogle";
 import ForgetPass from "../../components/ui/ForgetPass";
 import Navbar from "../../components/navbar/Navbar";
-import useAuthStore from "../../store/authstore";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../../../services/api/users";
+import { login } from "@assets/store/redux/slices/authSlice";
 
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
@@ -19,17 +20,17 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setErrorState] = useState("");
   const [passError, setPasswordError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuthStore();
+  const dispatch = useDispatch();
 
   // Fungsi untuk mengubah nilai email
   const handleEmailChange = (e) => {
     const { name, value } = e.target;
     if (name === "email") {
       setEmail(value);
-      setError("");
+      setErrorState("");
     }
   };
 
@@ -52,10 +53,10 @@ export default function LoginForm() {
 
     try {
       if (!email) {
-        setError("Email harus di isi");
+        setErrorState("Email harus di isi");
         return;
       } else if (!/\S+@\S+\.\S+/.test(email)) {
-        setError("Email tidak valid");
+        setErrorState("Email tidak valid");
         return;
       }
 
@@ -77,14 +78,15 @@ export default function LoginForm() {
 
       if (foundUser) {
         localStorage.setItem("currentUser", JSON.stringify(foundUser));
-        useAuthStore.getState().login();
+        dispatch(login(foundUser));
+
         navigate("/");
       } else {
-        setError("Email atau password salah");
+        setErrorState("Email atau password salah");
       }
     } catch (error) {
       console.error("Login error:", error);
-      setError("Terjadi kesalahan saat login");
+      setErrorState("Terjadi kesalahan saat login");
     }
   };
 

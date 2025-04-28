@@ -3,6 +3,7 @@ import NavbarProfile from "../../components/navbar/NavbarProfile";
 import Tab from "./components/Tab";
 import ProfileForm from "./components/ProfileForm";
 import Footer from "../home/homeComponent/Footer";
+import ListView from "@components/ListView";
 
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
@@ -19,6 +20,9 @@ export default function ProfilePage() {
             <Tab />
 
             <ProfileForm />
+          </div>
+          <div className="pb-8">
+            <ListView />
           </div>
         </Container>
 

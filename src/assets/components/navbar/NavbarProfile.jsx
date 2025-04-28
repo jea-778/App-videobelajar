@@ -1,10 +1,12 @@
+import { logout } from "@assets/store/redux/slices/authSlice";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useAuthStore from "../../store/authstore";
 
 export default function NavbarProfile({ imageName }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { isLoggedIn, logout } = useAuthStore();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -30,18 +32,22 @@ export default function NavbarProfile({ imageName }) {
   const navigateKategori = () => {
     navigate("/kategori");
   };
+
   const navigateProfile = () => {
     navigate("/profile");
   };
-  const navigateKelas = () => {
-    navigate("/");
-  };
+
   const navigatePesanan = () => {
     navigate("/pesanan");
   };
+
+  const navigateKelas = () => {
+    navigate("/");
+  };
+
   const navigateLeave = () => {
-    logout();
-    navigate("/login");
+    dispatch(logout());
+    navigate("/");
   };
 
   return (

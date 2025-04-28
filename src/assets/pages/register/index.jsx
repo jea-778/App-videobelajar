@@ -10,7 +10,8 @@ import ForgetPass from "../../components/ui/ForgetPass";
 import InputGender from "../../components/inputs/InputGender";
 import Navbar from "../../components/navbar/Navbar";
 import InputPass from "../../components/inputs/InputPass";
-import useAuthStore from "../../store/authstore";
+import { useDispatch } from "react-redux";
+import { login } from "@assets/store/redux/slices/authSlice";
 
 import { addUser } from "../../../services/api/users";
 
@@ -34,6 +35,8 @@ export default function RegisterForm() {
   const [passError, setPassError] = useState("");
   const [confirmPassError, setConfirmPassError] = useState("");
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   // fungsi untuk mengubah nilai name
   const handleNameChange = (e) => {
@@ -144,7 +147,7 @@ export default function RegisterForm() {
       // Simpan ke localStorage dan login
       localStorage.setItem("currentUser", JSON.stringify(createdUser));
       localStorage.setItem("users", JSON.stringify(newUser));
-      useAuthStore.getState().login();
+      dispatch(login(createdUser));
       navigate("/");
     } catch (error) {
       console.error("Register error:", error);

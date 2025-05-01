@@ -10,7 +10,13 @@ import ButtonDelete from "./ButtonDelete.jsx";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, updateUser } from "../../../../services/api/users";
 import { login, logout } from "@assets/store/redux/slices/authSlice.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchUsers,
+  editUser,
+  removeUser,
+  createUser,
+} from "@assets/store/redux/slices/userSlice.js";
 
 export default function ProfileForm() {
   const [name, setName] = useState("");
@@ -81,21 +87,23 @@ export default function ProfileForm() {
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    const userString = localStorage.getItem("currentUser");
-    const currentUser = userString ? JSON.parse(userString) : null;
+    const currentUserString = localStorage.getItem("currentUser");
+    const currentUser = currentUserString
+      ? JSON.parse(currentUserString)
+      : null;
 
     if (!currentUser) {
       console.error("User not found in localStorage");
       return;
     }
 
+    const id = getIdUser;
     try {
       const confirmDelete = window.confirm("Yakin ingin menghapus akun?");
       if (!confirmDelete) return;
 
       await deleteUser(currentUser.id);
       localStorage.removeItem("currentUser");
-      localStorage.removeItem("users");
       dispatch(logout());
       navigate("/");
     } catch (error) {
@@ -106,9 +114,6 @@ export default function ProfileForm() {
   // Fungsi untuk melakukan update/simpan
   const handleSave = async (e) => {
     e.preventDefault();
-
-    const userString = localStorage.getItem("currentUser");
-    const currentUser = userString ? JSON.parse(userString) : null;
 
     // validasi
     if (!name) {
@@ -154,8 +159,22 @@ export default function ProfileForm() {
       return;
     }
 
+    const currentUserString = localStorage.getItem("currentUser");
+    const currentUser = currentUserString
+      ? JSON.parse(currentUserString)
+      : null;
+
+    const userString = localStorage.getItem("users");
+    const users = userString ? JSON.parse(userString) : [];
+
+    if (!currentUser) {
+      alert("User belum login.");
+      return;
+    }
+
     try {
       const updatedUser = {
+        id: currentUser.id,
         name,
         email,
         gender,
@@ -164,11 +183,19 @@ export default function ProfileForm() {
         confirmPass,
       };
 
+      console.log("Trying to update user with ID:", currentUser.id);
+      console.log("Data to send:", updatedUser);
+
       const response = await updateUser(currentUser.id, updatedUser);
       console.log("Updated User Response:", response.data);
 
       localStorage.setItem("currentUser", JSON.stringify(response.data));
-      localStorage.setItem("users", JSON.stringify(response.data));
+
+      const updatedUsers = users.map((user) =>
+        user.id === currentUser.id ? response.data : user
+      );
+
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
     } catch (error) {
       console.error("Error updating user:", error);
     }
@@ -181,7 +208,7 @@ export default function ProfileForm() {
   };
 
   useEffect(() => {
-    const userString = localStorage.getItem("users");
+    const userString = localStorage.getItem("currentUser");
     if (userString) {
       const user = JSON.parse(userString);
 
@@ -193,7 +220,7 @@ export default function ProfileForm() {
       setConfirmPass(user.confirmPass || "");
     }
 
-    if (!login) {
+    if (!userString) {
       navigate("/");
     }
   }, []);

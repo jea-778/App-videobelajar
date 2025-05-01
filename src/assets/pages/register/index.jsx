@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { login } from "@assets/store/redux/slices/authSlice";
 
 import { addUser } from "../../../services/api/users";
+import { createUser } from "@assets/store/redux/slices/userSlice";
 
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
@@ -144,9 +145,9 @@ export default function RegisterForm() {
       const response = await addUser(newUser);
       const createdUser = response.data;
 
-      // Simpan ke localStorage dan login
       localStorage.setItem("currentUser", JSON.stringify(createdUser));
-      localStorage.setItem("users", JSON.stringify(newUser));
+      localStorage.removeItem("users");
+
       dispatch(login(createdUser));
       navigate("/");
     } catch (error) {

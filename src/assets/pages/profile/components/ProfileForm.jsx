@@ -97,7 +97,6 @@ export default function ProfileForm() {
       return;
     }
 
-    const id = getIdUser;
     try {
       const confirmDelete = window.confirm("Yakin ingin menghapus akun?");
       if (!confirmDelete) return;

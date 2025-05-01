@@ -80,57 +80,59 @@ function ListView() {
 
   return (
     <>
-      <div className="flex flex-col justify-start p-6 border rounded-xl bg-white w-full md:w-[300px]  ">
-        <div className="flex flex-col gap-4">
-          <h5>List data user</h5>
+      <div className="flex flex-col p-6 gap-4 border rounded-xl bg-white w-full md:w-[500px]  ">
+        <div className="flex flex-col gap-2">
+          <h5 className="text-[24px] font-poppins font-bold leading w-full ">
+            List data user
+          </h5>
           <button
-            className="bg-[#3ECF4C] hover:bg-green-600 active:bg-green-700 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[112px] h-[34px] md:h-[46px] "
+            className="bg-[#3ECF4C] hover:bg-green-600 active:bg-green-700 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[200px] h-[34px] md:h-[46px] "
             onClick={() => handleAddUser()}
           >
             Tambah
           </button>
-          <ul className="flex flex-col gap-4">
-            {users && users.length > 0 ? (
-              users.map((user) => {
-                const isCurrentUser = currentUser?.id === user.id;
-
-                return (
-                  <li key={user.id}>
-                    <div className="flex flex-col gap-6">
-                      <div className="flex flex-row md:flex-col">
-                        <p className="text-[16px] font-poppins font-medium leading w-full ">
-                          Nama: {user.name}
-                        </p>
-                        <p className="text-[16px] font-poppins font-medium leading w-full ">
-                          Email: {user.email}
-                        </p>
-                      </div>
-
-                      {isCurrentUser && (
-                        <div className="flex flex-col md:flex-row md:flex justify-center md:justify-start gap-4">
-                          <button
-                            className="bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[112px] h-[34px] md:h-[46px] "
-                            onClick={() => handleEditUser(user.id)}
-                          >
-                            Edit
-                          </button>
-                          <button
-                            className="bg-red-600 hover:bg-red-700 active:bg-red-800 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[112px] h-[34px] md:h-[46px]"
-                            onClick={() => handleDeleteUser(user.id)}
-                          >
-                            Hapus
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </li>
-                );
-              })
-            ) : (
-              <li>No users found.</li>
-            )}
-          </ul>
         </div>
+        <ul className="flex flex-col gap-4">
+          {users && users.length > 0 ? (
+            users.map((user) => {
+              const isCurrentUser = currentUser?.id === user.id;
+
+              return (
+                <li key={user.id}>
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col border-[#3ECF4C] border rounded-xl p-2 ">
+                      <p className="text-[16px] font-poppins font-medium leading w-full ">
+                        Nama : {user.name}
+                      </p>
+                      <p className="text-[16px] font-poppins font-medium leading w-full ">
+                        Email : {user.email}
+                      </p>
+                    </div>
+
+                    {isCurrentUser && (
+                      <div className="flex flex-col md:flex-row md:flex justify-center gap-5">
+                        <button
+                          className="bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px] "
+                          onClick={() => handleEditUser(user.id)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-600 hover:bg-red-700 active:bg-red-800 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px]"
+                          onClick={() => handleDeleteUser(user.id)}
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </li>
+              );
+            })
+          ) : (
+            <li>No users found.</li>
+          )}
+        </ul>
       </div>
     </>
   );

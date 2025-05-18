@@ -83,32 +83,32 @@ function ListView() {
           </button>
         </div>
         <ul className="flex flex-col gap-4">
-          {users && users.length > 0 ? (
+          {Array.isArray(users) && users.length > 0 ? (
             users.map((user) => {
               const isCurrentUser = currentUser?.id === user.id;
 
               return (
                 <li key={user.id}>
-                  <div className="flex flex-col gap-6">
-                    <div className="flex flex-col border-[#3ECF4C] border rounded-xl p-2 ">
-                      <p className="text-[16px] font-poppins font-medium leading w-full ">
-                        Nama : {user.name}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex flex-col border border-[#3ECF4C] rounded-xl p-4">
+                      <p className="text-[16px] font-medium font-poppins leading">
+                        Nama : {user.name || 'Tidak ada nama'}
                       </p>
-                      <p className="text-[16px] font-poppins font-medium leading w-full ">
-                        Email : {user.email}
+                      <p className="text-[16px] font-medium font-poppins leading">
+                        Email : {user.email || 'Tidak ada email'}
                       </p>
                     </div>
 
                     {isCurrentUser && (
-                      <div className="flex flex-col md:flex-row md:flex justify-center gap-5">
+                      <div className="flex flex-col md:flex-row justify-center gap-4">
                         <button
-                          className="bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 transition duration-200 rounded-xl text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px] "
+                          className="bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 transition duration-200 rounded-xl text-white text-[16px] font-medium w-full md:w-[212px] h-[46px]"
                           onClick={() => handleEditUser(user.id)}
                         >
                           Edit
                         </button>
                         <button
-                          className="bg-red-600 hover:bg-red-700 active:bg-red-800 transition duration-200 rounded-xl text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px]"
+                          className="bg-red-600 hover:bg-red-700 active:bg-red-800 transition duration-200 rounded-xl text-white text-[16px] font-medium w-full md:w-[212px] h-[46px]"
                           onClick={() => handleDeleteUser(user.id)}
                         >
                           Hapus
@@ -120,9 +120,10 @@ function ListView() {
               );
             })
           ) : (
-            <li>No users found.</li>
+            <li className="text-center text-gray-500">No users found.</li>
           )}
         </ul>
+
       </div>
     </>
   );

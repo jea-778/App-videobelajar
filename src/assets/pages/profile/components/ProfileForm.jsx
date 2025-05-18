@@ -97,6 +97,7 @@ export default function ProfileForm() {
 
     try {
       const confirmDelete = window.confirm("Yakin ingin menghapus akun?");
+      dispatch(hideLoading())
       if (!confirmDelete) return;
 
       await deleteUser(currentUser.id);

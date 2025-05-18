@@ -1,13 +1,11 @@
 import React from "react";
 
-export default function InputGender() {
+export default function InputGender({ value, type, id }) {
   return (
     <div className="block sm:hidden relative w-full">
       <div className="relative">
         <select
           className="block w-full h-[48px] pl-4 pr-8 py-3 text-[16px] text-[#222325] bg-white rounded-[10px] border border-gray-300 appearance-none focus:outline-none focus:border-[#3ECF4C] peer"
-          id="gender-select"
-          defaultValue=""
         >
           <option value="Laki-Laki">Laki-Laki</option>
           <option value="Perempuan">Perempuan</option>

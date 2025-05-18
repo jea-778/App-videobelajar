@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getUsers } from "../../../services/api/users";
 import { login } from "@assets/store/redux/slices/authSlice";
+import { hideLoading, showLoading } from "@assets/store/redux/slices/loadingSlice";
+import LoadingOverlay from "@components/Loading";
 
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
@@ -24,6 +26,7 @@ export default function LoginForm() {
   const [passError, setPasswordError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  dispatch(hideLoading());
 
   // Fungsi untuk mengubah nilai email
   const handleEmailChange = (e) => {
@@ -69,6 +72,7 @@ export default function LoginForm() {
         return;
       }
 
+      dispatch(showLoading());
       const response = await getUsers();
       const users = response.data;
 
@@ -82,9 +86,11 @@ export default function LoginForm() {
 
         navigate("/");
       } else {
+        dispatch(hideLoading());
         setErrorState("Email atau password salah");
       }
     } catch (error) {
+      dispatch(hideLoading());
       console.error("Login error:", error);
       setErrorState("Terjadi kesalahan saat login");
     }
@@ -103,6 +109,9 @@ export default function LoginForm() {
 
   return (
     <>
+      {/* Loading */}
+      <LoadingOverlay />
+
       {/* Navbar */}
       <Navbar />
 

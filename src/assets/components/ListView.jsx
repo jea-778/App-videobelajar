@@ -6,14 +6,10 @@ import {
   removeUser,
   createUser,
 } from "../store/redux/slices/userSlice";
-import { deleteUser } from "../../services/api/users";
-import { logout } from "@assets/store/redux/slices/authSlice";
-import { useNavigate } from "react-router-dom";
 
 function ListView() {
   const dispatch = useDispatch();
   const { users, status, error } = useSelector((state) => state.users);
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -24,7 +20,7 @@ function ListView() {
     const userExists = users.some((u) => u.email === user.email);
 
     if (userExists) {
-      alert("User sudah ada di daftar, tidak bisa tambah lagi.");
+      alert("User sudah ada di data, tidak bisa tambah lagi.");
     } else {
       dispatch(createUser(user));
     }
@@ -38,7 +34,7 @@ function ListView() {
   const getIdUser = () => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     if (!user) return null;
-    const findUser = users.find((u) => u.email === user.email);
+    const findUser = users.find((u) => u.id === user.id);
     return findUser ? findUser.id : null;
   };
 
@@ -53,16 +49,10 @@ function ListView() {
     }
   };
 
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = () => {
     const id = getIdUser();
     try {
-      const confirmDelete = window.confirm("Yakin ingin menghapus akun?");
-      if (!confirmDelete) return;
-
-      await deleteUser(id);
-      localStorage.removeItem("currentUser");
-      dispatch(logout());
-      navigate("/");
+      dispatch(removeUser(id));
     } catch (error) {
       alert("Error deleting user:", error.message);
     }
@@ -86,7 +76,7 @@ function ListView() {
             List data user
           </h5>
           <button
-            className="bg-[#3ECF4C] hover:bg-green-600 active:bg-green-700 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[200px] h-[34px] md:h-[46px] "
+            className="bg-[#3ECF4C] hover:bg-green-600 active:bg-green-700 transition duration-200 rounded-xl text-white font-sans text-[16px] font-medium leading w-full md:w-[200px] h-[34px] md:h-[46px] "
             onClick={() => handleAddUser()}
           >
             Tambah
@@ -112,13 +102,13 @@ function ListView() {
                     {isCurrentUser && (
                       <div className="flex flex-col md:flex-row md:flex justify-center gap-5">
                         <button
-                          className="bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px] "
+                          className="bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 transition duration-200 rounded-xl text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px] "
                           onClick={() => handleEditUser(user.id)}
                         >
                           Edit
                         </button>
                         <button
-                          className="bg-red-600 hover:bg-red-700 active:bg-red-800 transition duration-200 rounded-lg text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px]"
+                          className="bg-red-600 hover:bg-red-700 active:bg-red-800 transition duration-200 rounded-xl text-white font-sans text-[16px] font-medium leading w-full md:w-[212px] h-[34px] md:h-[46px]"
                           onClick={() => handleDeleteUser(user.id)}
                         >
                           Hapus

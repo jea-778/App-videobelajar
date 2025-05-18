@@ -12,16 +12,15 @@ import Navbar from "../../components/navbar/Navbar";
 import InputPass from "../../components/inputs/InputPass";
 import { useDispatch } from "react-redux";
 import { login } from "@assets/store/redux/slices/authSlice";
-
 import { addUser } from "../../../services/api/users";
-import { createUser } from "@assets/store/redux/slices/userSlice";
+import { hideLoading, showLoading } from "@assets/store/redux/slices/loadingSlice";
+import LoadingOverlay from "@components/Loading";
 
 const Container = ({ children }) => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
 );
 
 export default function RegisterForm() {
-  const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
@@ -38,6 +37,7 @@ export default function RegisterForm() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  dispatch(hideLoading());
 
   // fungsi untuk mengubah nilai name
   const handleNameChange = (e) => {
@@ -141,7 +141,9 @@ export default function RegisterForm() {
       role: "user",
     };
 
+    dispatch(showLoading());
     try {
+
       const response = await addUser(newUser);
       const createdUser = response.data;
 
@@ -151,6 +153,7 @@ export default function RegisterForm() {
       dispatch(login(createdUser));
       navigate("/");
     } catch (error) {
+      dispatch(hideLoading());
       console.error("Register error:", error);
       setError("Gagal daftar, coba lagi nanti.");
     }
@@ -169,6 +172,9 @@ export default function RegisterForm() {
 
   return (
     <>
+      {/*  Loading */}
+      <LoadingOverlay />
+
       {/* Navbar */}
       <Navbar />
 

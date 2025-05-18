@@ -9,14 +9,10 @@ import ButtonSave from "./ButtonSave.jsx";
 import ButtonDelete from "./ButtonDelete.jsx";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, updateUser } from "../../../../services/api/users";
-import { login, logout } from "@assets/store/redux/slices/authSlice.js";
+import { logout } from "@assets/store/redux/slices/authSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchUsers,
-  editUser,
-  removeUser,
-  createUser,
-} from "@assets/store/redux/slices/userSlice.js";
+import { showLoading, hideLoading } from "@assets/store/redux/slices/loadingSlice.js";
+import LoadingOverlay from "@components/Loading.jsx";
 
 export default function ProfileForm() {
   const [name, setName] = useState("");
@@ -35,6 +31,7 @@ export default function ProfileForm() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  dispatch(hideLoading());
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -86,6 +83,7 @@ export default function ProfileForm() {
   // Fungsi untuk melakukan delete
   const handleDelete = async (e) => {
     e.preventDefault();
+    dispatch(showLoading())
 
     const currentUserString = localStorage.getItem("currentUser");
     const currentUser = currentUserString
@@ -103,10 +101,12 @@ export default function ProfileForm() {
 
       await deleteUser(currentUser.id);
       localStorage.removeItem("currentUser");
+      dispatch(hideLoading())
       dispatch(logout());
       navigate("/");
     } catch (error) {
-      alert("Error deleting user:", error);
+      alert("Tidak bisa menghapus, user belum tertambah di database", error);
+      dispatch(hideLoading())
     }
   };
 
@@ -158,6 +158,8 @@ export default function ProfileForm() {
       return;
     }
 
+    dispatch(showLoading())
+
     const currentUserString = localStorage.getItem("currentUser");
     const currentUser = currentUserString
       ? JSON.parse(currentUserString)
@@ -167,6 +169,7 @@ export default function ProfileForm() {
     const users = userString ? JSON.parse(userString) : [];
 
     if (!currentUser) {
+      dispatch(hideLoading())
       alert("User belum login.");
       return;
     }
@@ -182,12 +185,7 @@ export default function ProfileForm() {
         confirmPass,
       };
 
-      console.log("Trying to update user with ID:", currentUser.id);
-      console.log("Data to send:", updatedUser);
-
       const response = await updateUser(currentUser.id, updatedUser);
-      console.log("Updated User Response:", response.data);
-
       localStorage.setItem("currentUser", JSON.stringify(response.data));
 
       const updatedUsers = users.map((user) =>
@@ -195,8 +193,12 @@ export default function ProfileForm() {
       );
 
       localStorage.setItem("users", JSON.stringify(updatedUsers));
+      dispatch(hideLoading())
     } catch (error) {
-      console.error("Error updating user:", error);
+      alert(
+        "Tidak bisa mengupdate, user belum tertambah di dalam database", error
+      );
+      dispatch(hideLoading())
     }
   };
 
@@ -226,6 +228,10 @@ export default function ProfileForm() {
 
   return (
     <div className="flex flex-col bg-white border rounded-lg p-6 gap-6 ">
+
+      {/* Loading */}
+      <LoadingOverlay />
+
       <UserData name={name} email={email} onClick={handleChangeProfile} />
 
       <div className="pt-4 md:pt-0">

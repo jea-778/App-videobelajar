@@ -37,10 +37,15 @@ const usersSlice = createSlice({
   name: "users",
   initialState: {
     users: [],
+    currentUser: null, // tambah ini
     status: "idle",
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setCurrentUser: (state, action) => {
+      state.currentUser = action.payload; // action.payload berupa user object
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Fetch Users
@@ -77,3 +82,4 @@ const usersSlice = createSlice({
 });
 
 export default usersSlice.reducer;
+export const { setCurrentUser } = usersSlice.actions;

@@ -5,31 +5,48 @@ import {
   editUser,
   removeUser,
   createUser,
+  setCurrentUser,
 } from "../store/redux/slices/userSlice";
+import { hideLoading, showLoading } from "@assets/store/redux/slices/loadingSlice";
 
 function ListView() {
   const dispatch = useDispatch();
   const { users, status, error } = useSelector((state) => state.users);
+  const currentUser = useSelector((state) => state.users.currentUser);
 
   useEffect(() => {
     dispatch(fetchUsers());
+
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+    if (user) {
+      dispatch(setCurrentUser(user));
+    }
   }, [dispatch]);
 
-  const handleAddUser = () => {
+  const handleAddUser = async () => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
-    const userExists = users.some((u) => u.email === user.email);
-
-    if (userExists) {
-      alert("User sudah ada di data, tidak bisa tambah lagi.");
-    } else {
-      dispatch(createUser(user));
-    }
-
     if (!user) {
       alert("Belum login, tidak ada data user!");
       return;
     }
+
+    const userExists = users.some((u) => u.email === user.email);
+    if (userExists) {
+      alert("User sudah ada di data, tidak bisa tambah lagi.");
+      return;
+    }
+
+    try {
+      dispatch(showLoading());
+      await dispatch(createUser(user)).unwrap();
+      dispatch(setCurrentUser(user));
+    } catch (error) {
+      alert("Error adding user: " + error.message);
+    } finally {
+      dispatch(hideLoading());
+    }
   };
+
 
   const getIdUser = () => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -38,35 +55,44 @@ function ListView() {
     return findUser ? findUser.id : null;
   };
 
-  const handleEditUser = () => {
+  const handleEditUser = async () => {
     const updatedUser = JSON.parse(localStorage.getItem("currentUser"));
     const id = getIdUser();
 
-    dispatch(editUser({ id, userData: updatedUser }));
-    if (!id) {
-      alert("User belum terdaftar di database");
-      return;
-    }
-  };
-
-  const handleDeleteUser = () => {
-    const id = getIdUser();
     try {
-      dispatch(removeUser(id));
+      dispatch(showLoading());
+      await dispatch(editUser({ id, userData: updatedUser })).unwrap();
     } catch (error) {
-      alert("Error deleting user:", error.message);
+      alert("Error editing user: " + error.message);
+    } finally {
+      dispatch(hideLoading());
     }
-
     if (!id) {
       alert("User belum terdaftar di database");
       return;
     }
   };
+
+  const handleDeleteUser = async () => {
+    const id = getIdUser();
+    if (!id) {
+      alert("User belum terdaftar di database");
+      return;
+    }
+
+    try {
+      dispatch(showLoading());
+      await dispatch(removeUser(id)).unwrap();
+    } catch (error) {
+      alert("Error deleting user: " + error.message);
+    } finally {
+      dispatch(hideLoading());
+    }
+  };
+
 
   if (status === "loading") return <div>Loading...</div>;
   if (status === "failed") return <div>Error: {error}</div>;
-
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   return (
     <>

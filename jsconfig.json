@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "frontend/src",
     "paths": {
       "@store/*": ["store/redux/*"],
       "@pages/*": ["pages/*"],
